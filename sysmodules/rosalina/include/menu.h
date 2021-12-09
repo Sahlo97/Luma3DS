@@ -30,6 +30,8 @@
 #include <3ds/services/hid.h>
 #include "MyThread.h"
 #include "utils.h"
+#include <3ds.h>
+#include "ifile.h"
 
 #define HID_PAD           (REG32(0x10146000) ^ 0xFFF)
 
@@ -89,3 +91,4 @@ void menuEnter(void);
 void menuLeave(void);
 void menuThreadMain(void);
 void menuShow(Menu *root);
+u32 ReadWifiCombo(IFile *file, void* buffer, u32 size, u32 offset);

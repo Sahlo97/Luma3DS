@@ -24,12 +24,10 @@
 *         reasonable ways as different from the original version.
 */
 
-#include <3ds.h>
 #include "menu.h"
 #include "draw.h"
 #include "fmt.h"
 #include "memory.h"
-#include "ifile.h"
 #include "menus.h"
 #include "utils.h"
 #include "menus/n3ds.h"
@@ -39,6 +37,7 @@
 
 u32 menuCombo = 0;
 u32 wifiCombo = 0;
+bool checkedWifiCombo = false;
 bool isHidInitialized = false;
 u32 mcuFwVersion = 0;
 
@@ -224,10 +223,54 @@ MyThread *menuCreateThread(void)
     return &menuThread;
 }
 
+u32 ReadWifiCombo(IFile *file, void* buffer, u32 size, u32 offset)
+{
+    Result res;
+    u64 total = 0;
+    file->pos = offset;
+    res = IFile_Read(file, &total, buffer, size);
+    return R_SUCCEEDED(res) ? total : 0;
+}
+
 void menuThreadMain(void)
 {
     if(isN3DS)
+	{
         N3DSMenu_UpdateStatus();
+	}
+	if(!checkedWifiCombo)
+	{
+		struct PACKED ALIGN(4)
+		{
+			u32 wifiCombo;
+		} wifiData;
+		s64 out;
+		bool isSdMode;
+		if(R_FAILED(svcGetSystemInfo(&out, 0x10000, 0x203))) svcBreak(USERBREAK_ASSERT);
+		isSdMode = (bool)out;
+		if(isSdMode)
+		{
+			IFile file;
+			
+			Result res;
+			res = IFile_Open(&file, ARCHIVE_SDMC, fsMakePath(PATH_EMPTY, ""), fsMakePath(PATH_ASCII, "/luma/wifi.bin"), FS_OPEN_READ);
+			if(R_SUCCEEDED(res))
+			{
+				ReadWifiCombo(&file, &wifiData, sizeof(wifiData), 0);
+				IFile_Close(&file); // done reading
+				wifiCombo = wifiData.wifiCombo;
+			}
+			else
+			{
+				wifiCombo = 257; //R + A
+			}
+		}
+		else
+		{
+			wifiCombo = 517;
+		}
+		checkedWifiCombo = true;
+	}
 
     while (!isServiceUsable("ac:u") || !isServiceUsable("hid:USER"))
         svcSleepThread(500 * 1000 * 1000LL);
@@ -250,7 +293,7 @@ void menuThreadMain(void)
             menuShow(&rosalinaMenu);
             menuLeave();
         }
-		else if(scanHeldKeys() == 517)
+		else if(scanHeldKeys() == wifiCombo)
 		{
 			SysConfigMenu_ToggleWifiCombo();
 		}
