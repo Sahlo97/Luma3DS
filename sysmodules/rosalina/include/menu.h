@@ -65,6 +65,7 @@ typedef struct Menu {
 } Menu;
 
 extern u32 menuCombo;
+extern u32 wifiCombo;
 extern bool isHidInitialized;
 extern u32 mcuFwVersion;
 

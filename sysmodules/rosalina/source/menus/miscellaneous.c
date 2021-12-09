@@ -68,6 +68,7 @@ Menu miscellaneousMenu = {
     {
         { "Switch the hb. title to the current app.", METHOD, .method = &MiscellaneousMenu_SwitchBoot3dsxTargetTitle },
         { "Change the menu combo", METHOD, .method = &MiscellaneousMenu_ChangeMenuCombo },
+		{ "Change Wifi combo", METHOD, .method = &MiscellaneousMenu_ChangeWifiCombo },
         { "Start InputRedirection", METHOD, .method = &MiscellaneousMenu_InputRedirection },
         { "Update time and date via NTP", METHOD, .method = &MiscellaneousMenu_UpdateTimeDateNtp },
         { "Nullify user time offset", METHOD, .method = &MiscellaneousMenu_NullifyUserTimeOffset },
@@ -192,6 +193,43 @@ void MiscellaneousMenu_ChangeMenuCombo(void)
     while(!(waitInput() & KEY_B) && !menuShouldExit);
 }
 
+void MiscellaneousMenu_ChangeWifiCombo(void)
+{
+	char comboStrOrig[128], comboStr[128];
+    u32 posY;
+
+    Draw_Lock();
+    Draw_ClearFramebuffer();
+    Draw_FlushFramebuffer();
+    Draw_Unlock();
+
+    MiscellaneousMenu_ConvertComboToString(comboStrOrig, wifiCombo);
+
+    Draw_Lock();
+    Draw_DrawString(10, 10, COLOR_TITLE, "Miscellaneous options menu");
+
+    posY = Draw_DrawFormattedString(10, 30, COLOR_WHITE, "The current wifi combo is:  %s", comboStrOrig);
+    posY = Draw_DrawString(10, posY + SPACING_Y, COLOR_WHITE, "Please enter the new combo:");
+
+    wifiCombo = waitCombo();
+    MiscellaneousMenu_ConvertComboToString(comboStr, wifiCombo);
+
+    do
+    {
+        Draw_Lock();
+        Draw_DrawString(10, 10, COLOR_TITLE, "Miscellaneous options menu");
+
+        posY = Draw_DrawFormattedString(10, 30, COLOR_WHITE, "The current wifi combo is:  %s", comboStrOrig);
+        posY = Draw_DrawFormattedString(10, posY + SPACING_Y, COLOR_WHITE, "Please enter the new combo: %s", comboStr) + SPACING_Y;
+
+        posY = Draw_DrawString(10, posY + SPACING_Y, COLOR_WHITE, "Successfully changed the wifi combo.");
+
+        Draw_FlushFramebuffer();
+        Draw_Unlock();
+    }
+    while(!(waitInput() & KEY_B) && !menuShouldExit);
+}
+
 void MiscellaneousMenu_SaveSettings(void)
 {
     Result res;
@@ -208,6 +246,11 @@ void MiscellaneousMenu_SaveSettings(void)
         u64 hbldr3dsxTitleId;
         u32 rosalinaMenuCombo;
     } configData;
+	
+	struct PACKED ALIGN(4)
+    {
+        u32 wifiCombo;
+    } wifiData;
 
     u32 formatVersion;
     u32 config, multiConfig, bootConfig;
@@ -223,6 +266,8 @@ void MiscellaneousMenu_SaveSettings(void)
     bootConfig = (u32)out;
     if(R_FAILED(svcGetSystemInfo(&out, 0x10000, 0x203))) svcBreak(USERBREAK_ASSERT);
     isSdMode = (bool)out;
+	
+	wifiData.wifiCombo = wifiCombo;
 
     memcpy(configData.magic, "CONF", 4);
     configData.formatVersionMajor = (u16)(formatVersion >> 16);
@@ -241,6 +286,14 @@ void MiscellaneousMenu_SaveSettings(void)
     if(R_SUCCEEDED(res))
         res = IFile_Write(&file, &total, &configData, sizeof(configData), 0);
     IFile_Close(&file);
+	
+    
+	res = IFile_Open(&file, archiveId, fsMakePath(PATH_EMPTY, ""), fsMakePath(PATH_ASCII, "/luma/wifi.bin"), FS_OPEN_CREATE | FS_OPEN_WRITE);	
+    if(R_SUCCEEDED(res))
+	{
+        res = IFile_Write(&file, &total, &wifiData, sizeof(wifiData), 0);
+	}
+	IFile_Close(&file);
 
     Draw_Lock();
     Draw_ClearFramebuffer();

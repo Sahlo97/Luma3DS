@@ -38,6 +38,7 @@
 #include "minisoc.h"
 
 u32 menuCombo = 0;
+u32 wifiCombo = 0;
 bool isHidInitialized = false;
 u32 mcuFwVersion = 0;
 
