@@ -247,10 +247,6 @@ void MiscellaneousMenu_SaveSettings(void)
         u32 rosalinaMenuCombo;
     } configData;
 	
-	struct PACKED ALIGN(4)
-    {
-        u32 wifiCombo;
-    } wifiData;
 
     u32 formatVersion;
     u32 config, multiConfig, bootConfig;
@@ -267,7 +263,7 @@ void MiscellaneousMenu_SaveSettings(void)
     if(R_FAILED(svcGetSystemInfo(&out, 0x10000, 0x203))) svcBreak(USERBREAK_ASSERT);
     isSdMode = (bool)out;
 	
-	wifiData.wifiCombo = wifiCombo;
+	u32 wifiData = wifiCombo;
 
     memcpy(configData.magic, "CONF", 4);
     configData.formatVersionMajor = (u16)(formatVersion >> 16);

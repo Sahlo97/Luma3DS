@@ -91,4 +91,3 @@ void menuEnter(void);
 void menuLeave(void);
 void menuThreadMain(void);
 void menuShow(Menu *root);
-u32 ReadWifiCombo(IFile *file, void* buffer, u32 size, u32 offset);

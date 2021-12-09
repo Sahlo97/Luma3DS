@@ -223,15 +223,6 @@ MyThread *menuCreateThread(void)
     return &menuThread;
 }
 
-u32 ReadWifiCombo(IFile *file, void* buffer, u32 size, u32 offset)
-{
-    Result res;
-    u64 total = 0;
-    file->pos = offset;
-    res = IFile_Read(file, &total, buffer, size);
-    return R_SUCCEEDED(res) ? total : 0;
-}
-
 void menuThreadMain(void)
 {
     if(isN3DS)
@@ -240,35 +231,29 @@ void menuThreadMain(void)
 	}
 	if(!checkedWifiCombo)
 	{
-		struct PACKED ALIGN(4)
-		{
-			u32 wifiCombo;
-		} wifiData;
+		u32 wifiData;
 		s64 out;
 		bool isSdMode;
 		if(R_FAILED(svcGetSystemInfo(&out, 0x10000, 0x203))) svcBreak(USERBREAK_ASSERT);
 		isSdMode = (bool)out;
-		if(isSdMode)
+		FS_ArchiveID archiveId = isSdMode ? ARCHIVE_SDMC : ARCHIVE_NAND_RW;
+
+		IFile file;
+		Result res;
+		res = IFile_Open(&file, archiveId, fsMakePath(PATH_EMPTY, ""), fsMakePath(PATH_ASCII, "/luma/wifi.bin"), FS_OPEN_READ);
+		if(R_SUCCEEDED(res))
 		{
-			IFile file;
-			
-			Result res;
-			res = IFile_Open(&file, ARCHIVE_SDMC, fsMakePath(PATH_EMPTY, ""), fsMakePath(PATH_ASCII, "/luma/wifi.bin"), FS_OPEN_READ);
-			if(R_SUCCEEDED(res))
-			{
-				ReadWifiCombo(&file, &wifiData, sizeof(wifiData), 0);
-				IFile_Close(&file); // done reading
-				wifiCombo = wifiData.wifiCombo;
-			}
-			else
-			{
-				wifiCombo = 257; //R + A
-			}
+			u64 total = 0;
+			file.pos = 0;
+			res = IFile_Read(&file, &total, &wifiData, sizeof(u32));
+			IFile_Close(&file); // done reading
+			wifiCombo = wifiData;
 		}
 		else
 		{
-			wifiCombo = 517;
+			wifiCombo = 0; //R + A
 		}
+
 		checkedWifiCombo = true;
 	}
 
@@ -293,7 +278,7 @@ void menuThreadMain(void)
             menuShow(&rosalinaMenu);
             menuLeave();
         }
-		else if(scanHeldKeys() == wifiCombo)
+		else if(scanHeldKeys() == wifiCombo && wifiCombo != 0)
 		{
 			SysConfigMenu_ToggleWifiCombo();
 		}
