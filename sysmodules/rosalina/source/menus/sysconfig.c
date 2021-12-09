@@ -81,14 +81,43 @@ void SysConfigMenu_ToggleLEDs(void)
     while(!menuShouldExit);
 }
 
+bool checkNWM(void)
+{
+	bool nwmRunning = false;
+
+    u32 pidList[0x40];
+    s32 processAmount;
+
+    svcGetProcessList(&processAmount, pidList, 0x40);
+
+    for(s32 i = 0; i < processAmount; i++)
+    {
+        Handle processHandle;
+        Result res = svcOpenProcess(&processHandle, pidList[i]);
+        if(R_FAILED(res))
+            continue;
+
+        char processName[8] = {0};
+        svcGetProcessInfo((s64 *)&processName, processHandle, 0x10000);
+        svcCloseHandle(processHandle);
+
+        if(!strncmp(processName, "nwm", 4))
+        {
+            nwmRunning = true;
+            break;
+        }
+    }
+	return nwmRunning;
+}
+
 void SysConfigMenu_ToggleWireless(void)
 {
     Draw_Lock();
     Draw_ClearFramebuffer();
     Draw_FlushFramebuffer();
     Draw_Unlock();
-
-    bool nwmRunning = isServiceUsable("nwm::EXT");
+	
+	bool nwmRunning = checkNWM();
 
     do
     {
@@ -126,6 +155,17 @@ void SysConfigMenu_ToggleWireless(void)
             return;
     }
     while(!menuShouldExit);
+}
+
+void SysConfigMenu_ToggleWifiCombo(void)
+{	
+	if(checkNWM())
+	{
+		u8 wireless = (*(vu8 *)((0x10140000 | (1u << 31)) + 0x180));
+		nwmExtInit();
+		NWMEXT_ControlWirelessEnabled(!wireless);
+		nwmExtExit();
+	}
 }
 
 void SysConfigMenu_UpdateStatus(bool control)

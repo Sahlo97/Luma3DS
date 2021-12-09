@@ -34,6 +34,7 @@
 #include "utils.h"
 #include "menus/n3ds.h"
 #include "menus/cheats.h"
+#include "menus/sysconfig.h"
 #include "minisoc.h"
 
 u32 menuCombo = 0;
@@ -248,6 +249,10 @@ void menuThreadMain(void)
             menuShow(&rosalinaMenu);
             menuLeave();
         }
+		else if(scanHeldKeys() == 517)
+		{
+			SysConfigMenu_ToggleWifiCombo();
+		}
     }
 }
 
