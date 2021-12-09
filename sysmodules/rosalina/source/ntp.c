@@ -145,12 +145,29 @@ Result ntpSetTimeDate(time_t timestamp)
     Result res = ptmSysmInit();
     if (R_FAILED(res)) return res;
 
-    // Update the user time offset
+    res = cfguInit();
+    if (R_FAILED(res))
+    {
+        ptmSysmExit();
+        return res;
+    }
+
+    // First, set the config RTC offset to 0
+    u8 rtcOff[8] = {0};
+    res = CFG_SetConfigInfoBlk4(8, 0x30001, rtcOff);
+    if (R_FAILED(res)) goto cleanup;
+
+    // Update the RTC
     // 946684800 is the timestamp of 01/01/2000 00:00 relative to the Unix Epoch
     s64 msY2k = (timestamp - 946684800) * 1000;
-    res = PTMSYSM_SetUserTime(msY2k);
+    res = PTMSYSM_SetRtcTime(msY2k);
+    if (R_FAILED(res)) goto cleanup;
 
+    // Save the config changes
+    res = CFG_UpdateConfigSavegame();
+    cleanup:
     ptmSysmExit();
+    cfguExit();
     return res;
 }
 
