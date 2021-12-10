@@ -251,7 +251,7 @@ void menuThreadMain(void)
 		}
 		else
 		{
-			wifiCombo = 0; //R + A
+			wifiCombo = 0;
 		}
 
 		checkedWifiCombo = true;

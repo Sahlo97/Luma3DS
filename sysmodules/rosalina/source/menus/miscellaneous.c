@@ -283,14 +283,17 @@ void MiscellaneousMenu_SaveSettings(void)
         res = IFile_Write(&file, &total, &configData, sizeof(configData), 0);
     IFile_Close(&file);
 	
-    
-	res = IFile_Open(&file, archiveId, fsMakePath(PATH_EMPTY, ""), fsMakePath(PATH_ASCII, "/luma/wifi.bin"), FS_OPEN_CREATE | FS_OPEN_WRITE);	
-    if(R_SUCCEEDED(res))
+	//only save wifi combo if set by user
+    if(wifiCombo != 0)
 	{
-        res = IFile_Write(&file, &total, &wifiData, sizeof(wifiData), 0);
+		res = IFile_Open(&file, archiveId, fsMakePath(PATH_EMPTY, ""), fsMakePath(PATH_ASCII, "/luma/wifi.bin"), FS_OPEN_CREATE | FS_OPEN_WRITE);	
+		if(R_SUCCEEDED(res))
+		{
+			res = IFile_Write(&file, &total, &wifiData, sizeof(wifiData), 0);
+		}
+		IFile_Close(&file);
 	}
-	IFile_Close(&file);
-
+	
     Draw_Lock();
     Draw_ClearFramebuffer();
     Draw_FlushFramebuffer();
