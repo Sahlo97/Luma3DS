@@ -38,6 +38,7 @@
 u32 menuCombo = 0;
 u32 wifiCombo = 0;
 bool checkedWifiCombo = false;
+bool wifiComboReleased = true;
 bool isHidInitialized = false;
 u32 mcuFwVersion = 0;
 
@@ -278,9 +279,14 @@ void menuThreadMain(void)
             menuShow(&rosalinaMenu);
             menuLeave();
         }
-		else if(scanHeldKeys() == wifiCombo && wifiCombo != 0)
+		else if(scanHeldKeys() == wifiCombo && wifiCombo != 0 && wifiComboReleased)
 		{
+			wifiComboReleased = false;
 			SysConfigMenu_ToggleWifiCombo();
+		}
+		if(!wifiComboReleased && scanHeldKeys() == 0)
+		{
+			wifiComboReleased = true;
 		}
     }
 }
