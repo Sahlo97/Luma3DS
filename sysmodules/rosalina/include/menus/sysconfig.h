@@ -39,5 +39,8 @@ void SysConfigMenu_ToggleWireless(void);
 void SysConfigMenu_TogglePowerButton(void);
 void SysConfigMenu_ControlWifi(void);
 void SysConfigMenu_DisableForcedWifiConnection(void);
+<<<<<<< HEAD
 bool checkNWM(void);
 void SysConfigMenu_ToggleWifiCombo(void);
+=======
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852

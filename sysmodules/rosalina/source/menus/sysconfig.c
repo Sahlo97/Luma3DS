@@ -1,6 +1,10 @@
 /*
 *   This file is part of Luma3DS
+<<<<<<< HEAD
 *   Copyright (C) 2016-2020 Aurora Wright, TuxSH
+=======
+*   Copyright (C) 2016-2021 Aurora Wright, TuxSH
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -81,6 +85,7 @@ void SysConfigMenu_ToggleLEDs(void)
     while(!menuShouldExit);
 }
 
+<<<<<<< HEAD
 bool checkNWM(void)
 {
 	bool nwmRunning = false;
@@ -110,14 +115,21 @@ bool checkNWM(void)
 	return nwmRunning;
 }
 
+=======
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 void SysConfigMenu_ToggleWireless(void)
 {
     Draw_Lock();
     Draw_ClearFramebuffer();
     Draw_FlushFramebuffer();
     Draw_Unlock();
+<<<<<<< HEAD
 	
 	bool nwmRunning = checkNWM();
+=======
+
+    bool nwmRunning = isServiceUsable("nwm::EXT");
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 
     do
     {
@@ -157,6 +169,7 @@ void SysConfigMenu_ToggleWireless(void)
     while(!menuShouldExit);
 }
 
+<<<<<<< HEAD
 void SysConfigMenu_ToggleWifiCombo(void)
 {	
 	if(checkNWM())
@@ -168,6 +181,8 @@ void SysConfigMenu_ToggleWifiCombo(void)
 	}
 }
 
+=======
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 void SysConfigMenu_UpdateStatus(bool control)
 {
     MenuItem *item = &sysconfigMenu.items[0];

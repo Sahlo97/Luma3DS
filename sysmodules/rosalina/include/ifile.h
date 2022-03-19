@@ -1,6 +1,10 @@
 /*
 *   This file is part of Luma3DS
+<<<<<<< HEAD
 *   Copyright (C) 2016-2020 Aurora Wright, TuxSH
+=======
+*   Copyright (C) 2016-2022 Aurora Wright, TuxSH
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -26,7 +30,11 @@
 
 #pragma once
 
+<<<<<<< HEAD
 #include <3ds/types.h>
+=======
+#include <3ds/services/fs.h>
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 
 #define PATH_MAX 255
 

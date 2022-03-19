@@ -1,6 +1,10 @@
 /*
 *   This file is part of Luma3DS
+<<<<<<< HEAD
 *   Copyright (C) 2016-2020 Aurora Wright, TuxSH
+=======
+*   Copyright (C) 2016-2021 Aurora Wright, TuxSH
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -30,8 +34,11 @@
 #include <3ds/services/hid.h>
 #include "MyThread.h"
 #include "utils.h"
+<<<<<<< HEAD
 #include <3ds.h>
 #include "ifile.h"
+=======
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 
 #define HID_PAD           (REG32(0x10146000) ^ 0xFFF)
 
@@ -67,7 +74,10 @@ typedef struct Menu {
 } Menu;
 
 extern u32 menuCombo;
+<<<<<<< HEAD
 extern u32 wifiCombo;
+=======
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 extern bool isHidInitialized;
 extern u32 mcuFwVersion;
 

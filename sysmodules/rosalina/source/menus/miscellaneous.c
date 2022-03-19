@@ -1,6 +1,10 @@
 /*
 *   This file is part of Luma3DS
+<<<<<<< HEAD
 *   Copyright (C) 2016-2020 Aurora Wright, TuxSH
+=======
+*   Copyright (C) 2016-2021 Aurora Wright, TuxSH
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -68,7 +72,10 @@ Menu miscellaneousMenu = {
     {
         { "Switch the hb. title to the current app.", METHOD, .method = &MiscellaneousMenu_SwitchBoot3dsxTargetTitle },
         { "Change the menu combo", METHOD, .method = &MiscellaneousMenu_ChangeMenuCombo },
+<<<<<<< HEAD
 		{ "Change Wifi combo", METHOD, .method = &MiscellaneousMenu_ChangeWifiCombo },
+=======
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
         { "Start InputRedirection", METHOD, .method = &MiscellaneousMenu_InputRedirection },
         { "Update time and date via NTP", METHOD, .method = &MiscellaneousMenu_UpdateTimeDateNtp },
         { "Nullify user time offset", METHOD, .method = &MiscellaneousMenu_NullifyUserTimeOffset },
@@ -193,6 +200,7 @@ void MiscellaneousMenu_ChangeMenuCombo(void)
     while(!(waitInput() & KEY_B) && !menuShouldExit);
 }
 
+<<<<<<< HEAD
 void MiscellaneousMenu_ChangeWifiCombo(void)
 {
 	char comboStrOrig[128], comboStr[128];
@@ -230,6 +238,8 @@ void MiscellaneousMenu_ChangeWifiCombo(void)
     while(!(waitInput() & KEY_B) && !menuShouldExit);
 }
 
+=======
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 void MiscellaneousMenu_SaveSettings(void)
 {
     Result res;
@@ -246,7 +256,10 @@ void MiscellaneousMenu_SaveSettings(void)
         u64 hbldr3dsxTitleId;
         u32 rosalinaMenuCombo;
     } configData;
+<<<<<<< HEAD
 	
+=======
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 
     u32 formatVersion;
     u32 config, multiConfig, bootConfig;
@@ -262,8 +275,11 @@ void MiscellaneousMenu_SaveSettings(void)
     bootConfig = (u32)out;
     if(R_FAILED(svcGetSystemInfo(&out, 0x10000, 0x203))) svcBreak(USERBREAK_ASSERT);
     isSdMode = (bool)out;
+<<<<<<< HEAD
 	
 	u32 wifiData = wifiCombo;
+=======
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 
     memcpy(configData.magic, "CONF", 4);
     configData.formatVersionMajor = (u16)(formatVersion >> 16);
@@ -282,6 +298,7 @@ void MiscellaneousMenu_SaveSettings(void)
     if(R_SUCCEEDED(res))
         res = IFile_Write(&file, &total, &configData, sizeof(configData), 0);
     IFile_Close(&file);
+<<<<<<< HEAD
 	
 	//only save wifi combo if set by user
     if(wifiCombo != 0)
@@ -294,6 +311,9 @@ void MiscellaneousMenu_SaveSettings(void)
 		IFile_Close(&file);
 	}
 	
+=======
+
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
     Draw_Lock();
     Draw_ClearFramebuffer();
     Draw_FlushFramebuffer();
@@ -437,7 +457,11 @@ void MiscellaneousMenu_UpdateTimeDateNtp(void)
 
     bool isSocURegistered;
 
+<<<<<<< HEAD
     time_t t;
+=======
+    u64 msSince1900, samplingTick;
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 
     res = srvIsServiceRegistered(&isSocURegistered, "soc:U");
     cantStart = R_FAILED(res) || !isSocURegistered;
@@ -476,12 +500,20 @@ void MiscellaneousMenu_UpdateTimeDateNtp(void)
     res = 0;
     if(!cantStart)
     {
+<<<<<<< HEAD
         res = ntpGetTimeStamp(&t);
         if(R_SUCCEEDED(res))
         {
             t += 3600 * utcOffset;
             t += 60 * utcOffsetMinute;
             res = ntpSetTimeDate(t);
+=======
+        res = ntpGetTimeStamp(&msSince1900, &samplingTick);
+        if(R_SUCCEEDED(res))
+        {
+            msSince1900 += 1000 * (3600 * utcOffset + 60 * utcOffsetMinute);
+            res = ntpSetTimeDate(msSince1900, samplingTick);
+>>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
         }
     }
 
