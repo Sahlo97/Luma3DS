@@ -34,11 +34,8 @@
 #include <3ds/services/hid.h>
 #include "MyThread.h"
 #include "utils.h"
-<<<<<<< HEAD
 #include <3ds.h>
 #include "ifile.h"
-=======
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 
 #define HID_PAD           (REG32(0x10146000) ^ 0xFFF)
 
@@ -74,10 +71,8 @@ typedef struct Menu {
 } Menu;
 
 extern u32 menuCombo;
-<<<<<<< HEAD
 extern u32 wifiCombo;
-=======
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
+
 extern bool isHidInitialized;
 extern u32 mcuFwVersion;
 

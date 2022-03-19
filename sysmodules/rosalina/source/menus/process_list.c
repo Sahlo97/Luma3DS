@@ -54,11 +54,8 @@ typedef struct ProcessInfo
 static ProcessInfo infos[0x40] = {0}, infosPrev[0x40] = {0};
 extern GDBServer gdbServer;
 
-<<<<<<< HEAD
-=======
 bool ascii = false;
 
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 static inline int ProcessListMenu_FormatInfoLine(char *out, const ProcessInfo *info)
 {
     const char *checkbox;
@@ -391,14 +388,11 @@ static void ProcessListMenu_MemoryViewer(const ProcessInfo *info)
             menus[MENU_MODE_SEARCH].buf = searchPattern;
             menus[MENU_MODE_SEARCH].max = 1;
             // ------------------------------------------
-<<<<<<< HEAD
-=======
             char u8ToChar(u8 val) {
                 if(val < 32 || val > 126)
                     return '-';
                 return val;
             }
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 
             void drawMenu(void)
             {
@@ -429,32 +423,22 @@ static void ProcessListMenu_MemoryViewer(const ProcessInfo *info)
                 // ------------------------------------------
 
                 // Location
-<<<<<<< HEAD
-                if(codeAvailable && heapAvailable)
-                {
-                    const u32 infoY = instructionsY + SPACING_Y;
-                    viewerY += SPACING_Y;
-=======
                 const u32 infoY = instructionsY + SPACING_Y;
                 viewerY += SPACING_Y;
                 if(codeAvailable && heapAvailable)
                 {    
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
                     Draw_DrawString(10, infoY, COLOR_WHITE, "Press L or R to switch between heap and code.");
                     if((u32)menus[MENU_MODE_NORMAL].buf == heapDestAddress)
                         Draw_DrawString(10 + SPACING_X * 31, infoY, COLOR_GREEN, "heap");
                     if((u32)menus[MENU_MODE_NORMAL].buf == codeDestAddress)
                         Draw_DrawString(10 + SPACING_X * 40, infoY, COLOR_GREEN, "code");
                 }
-<<<<<<< HEAD
-=======
                 else
                 {
                     Draw_DrawString(10, infoY, COLOR_WHITE, "SELECT to dump memory, START to toggle ASCII view.");
                     if(ascii)
                         Draw_DrawString(10 + SPACING_X * 39, infoY, COLOR_GREEN, "ASCII");
                 }
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
                 // ------------------------------------------
 
                 for(u32 row = menus[menuMode].starti; row < (menus[menuMode].starti + ROWS_PER_SCREEN); row++)
@@ -471,12 +455,6 @@ static void ProcessListMenu_MemoryViewer(const ProcessInfo *info)
 
                         if(address < menus[menuMode].max)
                         {
-<<<<<<< HEAD
-                            Draw_DrawFormattedString(x, y,
-                            address == menus[menuMode].selected ? (editing ? COLOR_RED : COLOR_GREEN) : COLOR_WHITE,
-                            "%.2x",
-                            menus[menuMode].buf[address]);
-=======
                             u32 color;
                             if(address == menus[menuMode].selected)
                             {
@@ -494,7 +472,6 @@ static void ProcessListMenu_MemoryViewer(const ProcessInfo *info)
                                 Draw_DrawFormattedString(x, y, color, "%c ", u8ToChar(val));
                             else
                                 Draw_DrawFormattedString(x, y, color, "%.2x", val);
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
                         }
                         else
                             Draw_DrawString(x, y, COLOR_WHITE, "  ");
@@ -567,11 +544,9 @@ static void ProcessListMenu_MemoryViewer(const ProcessInfo *info)
                     ProcessListMenu_DumpMemory(info->name, menus[MENU_MODE_NORMAL].buf, menus[MENU_MODE_NORMAL].max);
                     clearMenu();
                 }
-<<<<<<< HEAD
-=======
+
                 else if(pressed & KEY_START)
                     ascii = !ascii;
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 
                 if(editing)
                 {

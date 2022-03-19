@@ -1,10 +1,6 @@
 /*
 *   This file is part of Luma3DS
-<<<<<<< HEAD
-*   Copyright (C) 2016-2020 Aurora Wright, TuxSH
-=======
 *   Copyright (C) 2016-2021 Aurora Wright, TuxSH
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -85,51 +81,14 @@ void SysConfigMenu_ToggleLEDs(void)
     while(!menuShouldExit);
 }
 
-<<<<<<< HEAD
-bool checkNWM(void)
-{
-	bool nwmRunning = false;
-
-    u32 pidList[0x40];
-    s32 processAmount;
-
-    svcGetProcessList(&processAmount, pidList, 0x40);
-
-    for(s32 i = 0; i < processAmount; i++)
-    {
-        Handle processHandle;
-        Result res = svcOpenProcess(&processHandle, pidList[i]);
-        if(R_FAILED(res))
-            continue;
-
-        char processName[8] = {0};
-        svcGetProcessInfo((s64 *)&processName, processHandle, 0x10000);
-        svcCloseHandle(processHandle);
-
-        if(!strncmp(processName, "nwm", 4))
-        {
-            nwmRunning = true;
-            break;
-        }
-    }
-	return nwmRunning;
-}
-
-=======
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 void SysConfigMenu_ToggleWireless(void)
 {
     Draw_Lock();
     Draw_ClearFramebuffer();
     Draw_FlushFramebuffer();
     Draw_Unlock();
-<<<<<<< HEAD
-	
-	bool nwmRunning = checkNWM();
-=======
 
     bool nwmRunning = isServiceUsable("nwm::EXT");
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 
     do
     {
@@ -169,10 +128,9 @@ void SysConfigMenu_ToggleWireless(void)
     while(!menuShouldExit);
 }
 
-<<<<<<< HEAD
 void SysConfigMenu_ToggleWifiCombo(void)
 {	
-	if(checkNWM())
+	if(isServiceUsable("nwm::EXT"))
 	{
 		u8 wireless = (*(vu8 *)((0x10140000 | (1u << 31)) + 0x180));
 		nwmExtInit();
@@ -181,8 +139,6 @@ void SysConfigMenu_ToggleWifiCombo(void)
 	}
 }
 
-=======
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 void SysConfigMenu_UpdateStatus(bool control)
 {
     MenuItem *item = &sysconfigMenu.items[0];

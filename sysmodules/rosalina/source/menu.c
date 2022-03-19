@@ -1,10 +1,6 @@
 /*
 *   This file is part of Luma3DS
-<<<<<<< HEAD
-*   Copyright (C) 2016-2020 Aurora Wright, TuxSH
-=======
 *   Copyright (C) 2016-2022 Aurora Wright, TuxSH
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -28,23 +24,16 @@
 *         reasonable ways as different from the original version.
 */
 
-<<<<<<< HEAD
-=======
 #include <3ds.h>
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 #include "menu.h"
 #include "draw.h"
 #include "fmt.h"
 #include "memory.h"
-<<<<<<< HEAD
-=======
 #include "ifile.h"
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 #include "menus.h"
 #include "utils.h"
 #include "menus/n3ds.h"
 #include "menus/cheats.h"
-<<<<<<< HEAD
 #include "menus/sysconfig.h"
 #include "minisoc.h"
 
@@ -52,11 +41,9 @@ u32 menuCombo = 0;
 u32 wifiCombo = 0;
 bool checkedWifiCombo = false;
 bool wifiComboReleased = true;
-=======
+
 #include "minisoc.h"
 
-u32 menuCombo = 0;
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 bool isHidInitialized = false;
 u32 mcuFwVersion = 0;
 
@@ -245,7 +232,6 @@ MyThread *menuCreateThread(void)
 void menuThreadMain(void)
 {
     if(isN3DS)
-<<<<<<< HEAD
 	{
         N3DSMenu_UpdateStatus();
 	}
@@ -276,9 +262,6 @@ void menuThreadMain(void)
 
 		checkedWifiCombo = true;
 	}
-=======
-        N3DSMenu_UpdateStatus();
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
 
     while (!isServiceUsable("ac:u") || !isServiceUsable("hid:USER"))
         svcSleepThread(500 * 1000 * 1000LL);
@@ -301,7 +284,6 @@ void menuThreadMain(void)
             menuShow(&rosalinaMenu);
             menuLeave();
         }
-<<<<<<< HEAD
 		else if(scanHeldKeys() == wifiCombo && wifiCombo != 0 && wifiComboReleased)
 		{
 			wifiComboReleased = false;
@@ -311,8 +293,6 @@ void menuThreadMain(void)
 		{
 			wifiComboReleased = true;
 		}
-=======
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
     }
 }
 
@@ -491,11 +471,8 @@ void menuShow(Menu *root)
         }
         else if(pressed & KEY_B)
         {
-<<<<<<< HEAD
-=======
             while (nbPreviousMenus == 0 && (scanHeldKeys() & KEY_B)); // wait a bit before exiting rosalina
 
->>>>>>> bc6e14ada784ce93f5dbd030bfc557a6ba5f9852
             Draw_Lock();
             Draw_ClearFramebuffer();
             Draw_FlushFramebuffer();
