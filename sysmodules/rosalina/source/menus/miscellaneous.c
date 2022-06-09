@@ -268,6 +268,7 @@ void MiscellaneousMenu_ChangeWifiCombo(void)
         Draw_Unlock();
     }
     while(!(waitInput() & KEY_B) && !menuShouldExit);
+}
 
 static size_t saveLumaIniConfigToStr(char *out, const CfgData *cfg)
 {
