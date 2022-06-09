@@ -41,3 +41,4 @@ void SysConfigMenu_ControlWifi(void);
 void SysConfigMenu_DisableForcedWifiConnection(void);
 bool checkNWM(void);
 void SysConfigMenu_ToggleWifiCombo(void);
+void SysConfigMenu_ToggleCardIfPower(void);
