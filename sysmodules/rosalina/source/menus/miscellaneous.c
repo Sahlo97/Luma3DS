@@ -107,11 +107,11 @@ Menu miscellaneousMenu = {
     {
         { "Switch the hb. title to the current app.", METHOD, .method = &MiscellaneousMenu_SwitchBoot3dsxTargetTitle },
         { "Change the menu combo", METHOD, .method = &MiscellaneousMenu_ChangeMenuCombo },
-		{ "Change Wifi combo", METHOD, .method = &MiscellaneousMenu_ChangeWifiCombo },
         { "Start InputRedirection", METHOD, .method = &MiscellaneousMenu_InputRedirection },
         { "Update time and date via NTP", METHOD, .method = &MiscellaneousMenu_UpdateTimeDateNtp },
         { "Nullify user time offset", METHOD, .method = &MiscellaneousMenu_NullifyUserTimeOffset },
         { "Dump DSP firmware", METHOD, .method = &MiscellaneousMenu_DumpDspFirm },
+		{ "Change Wifi combo", METHOD, .method = &MiscellaneousMenu_ChangeWifiCombo },
         { "Save settings", METHOD, .method = &MiscellaneousMenu_SaveSettings },
         {},
     }
